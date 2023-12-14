@@ -65,3 +65,8 @@ TW_HAS_DOWNLOAD_MODE := true
 TW_INCLUDE_CRYPTO := false
 TW_INCLUDE_NTFS_3G := true
 TW_NO_EXFAT_FUSE := true
+
+
+# SHRP Flags
+SHRP_DEVICE_CODE := gtaxllte
+SHRP_MAINTAINER := Seif Hossam
