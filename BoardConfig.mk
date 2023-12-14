@@ -69,4 +69,4 @@ TW_NO_EXFAT_FUSE := true
 
 # SHRP Flags
 SHRP_DEVICE_CODE := gtaxllte
-SHRP_MAINTAINER := Seif Hossam
+SHRP_MAINTAINER := SeifHecker2099
