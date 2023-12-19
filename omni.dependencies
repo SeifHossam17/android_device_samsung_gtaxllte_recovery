@@ -9,6 +9,6 @@
 		"remote":"github",
 		"repository":"TeamWin/android_hardware_samsung",
 		"target_path":"hardware/samsung",
-		"revision":"lineage-16.0"
+		"revision":"lineage-19.1-audimprov"
 	}		
 ]
