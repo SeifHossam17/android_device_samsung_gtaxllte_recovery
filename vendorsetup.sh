@@ -1,52 +1,71 @@
+#
+# This file is part of the OrangeFox Recovery Project
+#  Copyright (C) 2021-2023 The OrangeFox Recovery Project
+#
+# OrangeFox is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# any later version.
+#
+# OrangeFox is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+#  This software is released under GPL version 3 or any later version.
+# See <http://www.gnu.org/licenses/>.
+#
+#  Please maintain this if you use this script or any part of it
+#
 FDEVICE="gtaxllte"
 
-# gtaxllte specific
-export TARGET_DEVICE_ALT="gtaxllte, gtaxl, gtaxlltexx"
+fox_get_target_device() {
+local chkdev=$(echo "$BASH_SOURCE" | grep -w \"$FDEVICE\")
+   if [ -n "$chkdev" ]; then 
+      FOX_BUILD_DEVICE="$FDEVICE"
+   else
+      chkdev=$(set | grep BASH_ARGV | grep -w \"$FDEVICE\")
+      [ -n "$chkdev" ] && FOX_BUILD_DEVICE="$FDEVICE"
+   fi
+}
 
-# R11
-export FOX_R11="1"
-export FOX_BUILD_TYPE="Stable"
-export FOX_VERSION="R11.1"
-export FOX_ADVANCED_SECURITY="1"
-export OF_USE_TWRP_SAR_DETECT="1"
-export OF_DISABLE_MIUI_OTA_BY_DEFAULT="1"
-export OF_QUICK_BACKUP_LIST="/boot;/data;/system_image;"
+if [ -z "$1" -a -z "$FOX_BUILD_DEVICE" ]; then
+   fox_get_target_device
+fi
 
-# Common
-export TARGET_ARCH="arm64"
-export ALLOW_MISSING_DEPENDENCIES=true
-export LC_ALL="C"
-export FOX_RECOVERY_INSTALL_PARTITION="/dev/block/platform/13540000.dwmmc0/by-name/RECOVERY"
+if [ "$1" = "$FDEVICE" -o "$FOX_BUILD_DEVICE" = "$FDEVICE" ]; then
+ export FOX_USE_NANO_EDITOR=1
+ export FOX_ENABLE_APP_MANAGER=1
+ export OF_IGNORE_LOGICAL_MOUNT_ERRORS=1
+    export TW_DEFAULT_LANGUAGE="en"
+ export LC_ALL="C"
+  export ALLOW_MISSING_DEPENDENCIES=true
+ export TARGET_DEVICE_ALT="gtaxllte"
+ export FOX_RECOVERY_INSTALL_PARTITION="/dev/block/platform/13540000.dwmmc0/by-name/RECOVERY"
 export FOX_RECOVERY_SYSTEM_PARTITION="/dev/block/platform/13540000.dwmmc0/by-name/SYSTEM"
+ export OF_USE_MAGISKBOOT_FOR_ALL_PATCHES=1
+ export OF_DONT_PATCH_ENCRYPTED_DEVICE=1
+ export OF_NO_MIUI_PATCH_WARNING=1
+ export FOX_USE_BASH_SHELL=1
+ export FOX_ASH_IS_BASH=1
+  export FOX_DRASTIC_SIZE_REDUCTION=1
+  export FOX_REMOVE_AAPT=1
+  export FOX_REMOVE_ZIP_BINARY=1
+  export FOX_REMOVE_BASH=1
+  export BUILD_2GB_VERSION=1
 
-export FOX_ASH_IS_BASH="1"
-export FOX_REPLACE_BUSYBOX_PS="1"
-export FOX_USE_BASH_SHELL="1"
-export FOX_USE_LZMA_COMPRESSION="1"
-export FOX_USE_NANO_EDITOR="1"
-export FOX_USE_TAR_BINARY="1"
-export FOX_USE_TWRP_RECOVERY_IMAGE_BUILDER="1"
-export FOX_USE_ZIP_BINARY="1"
-export LZMA_RAMDISK_TARGETS="recovery"
-export OF_AB_DEVICE="0"
-export OF_DISABLE_MIUI_SPECIFIC_FEATURES="1"
-export OF_DONT_PATCH_ENCRYPTED_DEVICE="1"
-export OF_FLASHLIGHT_ENABLE="0"
-export OF_KEEP_FORCED_ENCRYPTION="1"
-export OF_MAINTAINER="SeifHecker2099"
-export OF_NO_TREBLE_COMPATIBILITY_CHECK="1"
-export OF_SCREEN_H="1920"
-export OF_SKIP_MULTIUSER_FOLDERS_BACKUP="1"
-export OF_TWRP_COMPATIBILITY_MODE="1"
-export OF_USE_MAGISKBOOT="1"
-export OF_USE_MAGISKBOOT_FOR_ALL_PATCHES="1"
-export OF_USE_NEW_MAGISKBOOT="1"
-export PLATFORM_SECURITY_PATCH="2099-12-31"
-export PLATFORM_VERSION="16.1.0"
-export TW_DEFAULT_LANGUAGE="en"
-
-# use system (ROM) fingerprint where available
-export OF_USE_SYSTEM_FINGERPRINT="1"
-
+ # let's see what are our build VARs
+ if [ -n "$FOX_BUILD_LOG_FILE" -a -f "$FOX_BUILD_LOG_FILE" ]; then
+      export | grep "FOX" >> $FOX_BUILD_LOG_FILE
+      export | grep "OF_" >> $FOX_BUILD_LOG_FILE
+       export | grep "TARGET_" >> $FOX_BUILD_LOG_FILE
+      export | grep "TW_" >> $FOX_BUILD_LOG_FILE
+  fi
+else
+ if [ -z "$FOX_BUILD_DEVICE" -a -z "$BASH_SOURCE" ]; then
+  echo "I: This script requires bash. Not processing the $FDEVICE $(basename $0)"
+ fi
+fi
+#
 
 add_lunch_combo omni_gtaxllte-eng
