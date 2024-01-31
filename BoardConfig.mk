@@ -66,3 +66,4 @@ TW_INCLUDE_CRYPTO := false
 TW_INCLUDE_NTFS_3G := true
 TW_NO_EXFAT_FUSE := true
 
+PB_TORCH_PATH := "/sys/class/flashlight"
