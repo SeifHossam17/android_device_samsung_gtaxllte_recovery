@@ -29,14 +29,15 @@ TARGET_KERNEL_SOURCE := kernel/samsung/gtaxl
 BOARD_KERNEL_BASE := 0x10000000
 BOARD_KERNEL_PAGESIZE := 2048
 BOARD_KERNEL_IMAGE_NAME := kernel
-BOARD_KERNEL_SEPARATED_DT := true
+#BOARD_KERNEL_SEPARATED_DT := true
 
-TARGET_CUSTOM_DTBTOOL := dtbhtoolExynos
-TARGET_SPECIFIC_HEADER_PATH += device/samsung/gtaxllte/include
+#TARGET_CUSTOM_DTBTOOL := dtbhtoolExynos
+#TARGET_SPECIFIC_HEADER_PATH += device/samsung/gtaxllte/include
 
 # 000RU = recovery kernel, 000KU = system kernel
-BOARD_MKBOOTIMG_ARGS := --kernel_offset 0x00008000 --ramdisk_offset 0x01000000 --tags_offset 0x00000100 --board FPRPGTAX000RU
+BOARD_MKBOOTIMG_ARGS := --kernel_offset 0x00008000 --ramdisk_offset 0x01000000 --tags_offset 0x00000100 --dt $(TARGET_PREBUILT_DT) --board FPRPGTAX000RU
 TARGET_PREBUILT_KERNEL := device/samsung/gtaxllte/kernel
+TARGET_PREBUILT_DT := device/samsung/gtaxllte/dt.img
 BOARD_CUSTOM_BOOTIMG_MK :=  device/samsung/gtaxllte/mkbootimg.mk
 LZMA_RAMDISK_TARGETS := recovery
 
